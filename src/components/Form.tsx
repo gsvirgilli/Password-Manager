@@ -15,7 +15,7 @@ function Form({ cancelar }:CancelarProps) {
   const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[\w!@#$%^&*()\-_=+{};:,<.>.]{8,16}$/;
 
   const validaForm = () => {
-    return servico.length && login.length && (regex.test(senha));
+    return servico.length && login.length && (regex.test(senha)) && url.length;
   };
 
   const validacaoSenha = (caso: boolean) => {
