@@ -1,26 +1,57 @@
-import './App.css';
 import { useState } from 'react';
 import Form from './components/Form';
 import Title from './components/Title';
 
+type Servico = {
+  servico: string;
+  login: string;
+  senha: string;
+  url: string;
+};
+
 function App() {
-  const [cadastrar, setCadastrar] = useState(true);
+  const [cadastrar, setCadastrar] = useState(false);
+  const [lista, setLista] = useState<Servico[]>([]);
 
   const handleMostrarForm = () => {
-    setCadastrar(false);
-  };
-
-  const handleMostrarButton = () => {
     setCadastrar(true);
   };
 
+  const handleMostrarButton = () => {
+    setCadastrar(false);
+  };
+
+  const handleCadastrar = (servico: Servico) => {
+    setLista([...lista, servico]);
+    setCadastrar(false);
+  };
+
   return (
-    <div>
+    <>
       <Title />
-      { cadastrar
-        ? <button onClick={ handleMostrarForm }>Cadastrar nova senha</button>
-        : <Form cancelar={ handleMostrarButton } />}
-    </div>
+      {cadastrar ? (
+        <Form handleCadastrar={ handleCadastrar } cancelar={ handleMostrarButton } />
+      ) : (
+        <>
+          <ul>
+            <button onClick={ handleMostrarForm }>Cadastrar nova senha</button>
+          </ul>
+          <ul>
+            {lista.length ? (
+              lista.map((service) => (
+                <li key={ service.servico }>
+                  <a href={ service.url }>{service.servico}</a>
+                  <span>{ service.login }</span>
+                  <span>{ service.senha }</span>
+                </li>
+              ))
+            ) : (
+              <li>nenhuma senha cadastrada</li>
+            )}
+          </ul>
+        </>
+      )}
+    </>
   );
 }
 

@@ -1,10 +1,18 @@
 import { useState } from 'react';
 
-type CancelarProps = {
-  cancelar: (() => void)
+type Servico = {
+  servico: string;
+  login: string;
+  senha: string;
+  url: string;
 };
 
-function Form({ cancelar }:CancelarProps) {
+type CancelarProps = {
+  cancelar: (() => void);
+  handleCadastrar: (servico: Servico) => void;
+};
+
+function Form({ handleCadastrar, cancelar }:CancelarProps) {
   const [servico, setServico] = useState('');
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
@@ -53,7 +61,12 @@ function Form({ cancelar }:CancelarProps) {
         URL
         <input onChange={ (e) => setUrl(e.target.value) } id="url" type="text" />
       </label>
-      <button disabled={ !validaForm() }>Cadastrar</button>
+      <button
+        onClick={ () => handleCadastrar({ servico, login, senha, url }) }
+        disabled={ !validaForm() }
+      >
+        Cadastrar
+      </button>
       <button onClick={ cancelar }>Cancelar</button>
     </form>
   );
