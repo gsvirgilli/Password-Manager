@@ -1,29 +1,61 @@
+import { useState } from 'react';
+
 type CancelarProps = {
   cancelar: (() => void)
 };
 
 function Form({ cancelar }:CancelarProps) {
+  const [servico, setServico] = useState('');
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
+  const [url, setUrl] = useState('');
+  const regexAbc123 = /^(?=.*[a-zA-Z])(?=.*\d)/;
+  const regexEspecial = /^(?=.*[!@#$%^&*()\-_=+{};:,<.>])/;
+  const regex816 = /^[\w!@#$%^&*()\-_=+{};:,<.>.]{8,16}$/;
+  const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[\w!@#$%^&*()\-_=+{};:,<.>.]{8,16}$/;
+
+  const validaForm = () => {
+    return servico.length && login.length && (regex.test(senha));
+  };
+
+  const validacaoSenha = (caso: boolean) => {
+    return caso ? 'valid-password-check' : 'invalid-password-check';
+  };
+
   return (
-    <>
+    <form>
       <label htmlFor="name">
         Nome do serviço
-        <input id="name" type="text" />
+        <input onChange={ (e) => setServico(e.target.value) } id="name" type="text" />
       </label>
       <label htmlFor="login">
         Login
-        <input id="login" type="text" />
+        <input onChange={ (e) => setLogin(e.target.value) } id="login" type="text" />
       </label>
       <label htmlFor="senha">
         Senha
-        <input id="senha" type="password" />
+        <input onChange={ (e) => setSenha(e.target.value) } id="senha" type="password" />
       </label>
+      <span className={ validacaoSenha(regex816.test(senha)) }>
+        Possuir 8 ou mais caracteres
+      </span>
+      <span className={ validacaoSenha(regex816.test(senha)) }>
+        Possuir até 16 caracteres
+      </span>
+      <span className={ validacaoSenha(regexAbc123.test(senha)) }>
+        Possuir letras e números
+      </span>
+      <span className={ validacaoSenha(regexEspecial.test(senha)) }>
+        Possuir algum caractere especial
+      </span>
+
       <label htmlFor="url">
         URL
-        <input id="url" type="text" />
+        <input onChange={ (e) => setUrl(e.target.value) } id="url" type="text" />
       </label>
-      <button disabled>Cadastrar</button>
+      <button disabled={ !validaForm() }>Cadastrar</button>
       <button onClick={ cancelar }>Cancelar</button>
-    </>
+    </form>
   );
 }
 
