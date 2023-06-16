@@ -26,6 +26,14 @@ function App() {
     setCadastrar(false);
   };
 
+  const removeService = (ulrServico: Servico) => {
+    const filtrar = lista.filter(
+      (service) => ulrServico.servico !== service.servico,
+    );
+
+    setLista(filtrar);
+  };
+
   return (
     <>
       <Title />
@@ -43,6 +51,12 @@ function App() {
                   <a href={ service.url }>{service.servico}</a>
                   <span>{ service.login }</span>
                   <span>{ service.senha }</span>
+                  <button
+                    data-testid="remove-btn"
+                    onClick={ () => removeService(service) }
+                  >
+                    Remover
+                  </button>
                 </li>
               ))
             ) : (
