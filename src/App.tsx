@@ -12,6 +12,7 @@ type Servico = {
 function App() {
   const [cadastrar, setCadastrar] = useState(false);
   const [lista, setLista] = useState<Servico[]>([]);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleMostrarForm = () => {
     setCadastrar(true);
@@ -34,6 +35,10 @@ function App() {
     setLista(filtrar);
   };
 
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
     <>
       <Title />
@@ -50,7 +55,9 @@ function App() {
                 <li key={ service.servico }>
                   <a href={ service.url }>{service.servico}</a>
                   <span>{ service.login }</span>
-                  <span>{ service.senha }</span>
+                  { isChecked
+                    ? <span>******</span>
+                    : <span>{ service.senha }</span>}
                   <button
                     data-testid="remove-btn"
                     onClick={ () => removeService(service) }
@@ -63,6 +70,13 @@ function App() {
               <li>nenhuma senha cadastrada</li>
             )}
           </ul>
+          <input
+            type="checkbox"
+            id="meuCheckbox"
+            checked={ isChecked }
+            onChange={ handleCheckboxChange }
+          />
+          <label htmlFor="meuCheckbox">Esconder senhas</label>
         </>
       )}
     </>
