@@ -67,7 +67,7 @@ function App() {
                 </li>
               ))
             ) : (
-              <li>nenhuma senha cadastrada</li>
+              <p>Não há nenhuma senha cadastrada...</p>
             )}
           </ul>
           <input
